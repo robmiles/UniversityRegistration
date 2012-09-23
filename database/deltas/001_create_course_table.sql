@@ -1,0 +1,3 @@
+CREATE TABLE Course (
+    Name VARCHAR(200) NOT NULL
+)
