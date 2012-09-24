@@ -1,6 +1,10 @@
 package com.thoughtworks.universityregistration.web.infrastructure;
 
+import com.thoughtworks.universityregistration.domain.repositories.CourseRepository;
+import com.thoughtworks.universityregistration.infrastructure.hibernate.repositories.HibernateCourseRepository;
+import com.thoughtworks.universityregistration.web.controllers.CourseListController;
 import com.thoughtworks.universityregistration.web.controllers.HomeController;
+import com.thoughtworks.universityregistration.web.routes.CourseListRoute;
 import com.thoughtworks.universityregistration.web.routes.HomeRoute;
 
 import javax.servlet.ServletConfig;
@@ -10,10 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.thoughtworks.universityregistration.infrastructure.hibernate.HibernateUtils.getSessionFactory;
+
 public class UniversityRegistrationServlet extends HttpServlet {
 
-    private HtmlGenerator htmlGenerator;
-    private ViewRenderer viewRenderer;
     private Router router;
 
     @Override
@@ -22,11 +26,13 @@ public class UniversityRegistrationServlet extends HttpServlet {
 
         String pathToTemplatesFolder = config.getServletContext().getRealPath("/WEB-INF/templates");
         StringTemplateProcessor stringTemplateProcessor = new StringTemplateProcessor(pathToTemplatesFolder);
-        htmlGenerator = new HtmlGenerator(stringTemplateProcessor);
-        viewRenderer = new ViewRenderer(htmlGenerator);
+        HtmlGenerator htmlGenerator = new HtmlGenerator(stringTemplateProcessor);
+        ViewRenderer viewRenderer = new ViewRenderer(htmlGenerator);
+        CourseRepository courseRepository = new HibernateCourseRepository(getSessionFactory());
 
         router = new Router();
         router.add(new HomeRoute(new HomeController(), viewRenderer));
+        router.add(new CourseListRoute(new CourseListController(courseRepository), viewRenderer));
 
     }
 

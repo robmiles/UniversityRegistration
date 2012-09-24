@@ -1,9 +1,13 @@
 package com.thoughtworks.universityregistration.framework;
 
+import com.thoughtworks.universityregistration.framework.actors.Actor;
+import com.thoughtworks.universityregistration.framework.datasetup.DataItemNotFoundException;
 import com.thoughtworks.universityregistration.framework.datasetup.DataTag;
 import com.thoughtworks.universityregistration.framework.datasetup.DataWriter;
 import com.thoughtworks.universityregistration.framework.datasetup.builders.Builder;
+import com.thoughtworks.universityregistration.framework.pagemodel.Assertion;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class Framework {
@@ -55,6 +59,30 @@ public class Framework {
     public static <$Builder extends Builder> void and($Builder argument, DataTag dataTag) {
         Object dataItem = argument.build();
         dataItems.put(dataTag.getName(), dataItem);
+    }
+
+    public static <$Actor extends Actor> $Actor when($Actor argument) throws Exception {
+        persistData();
+        return argument;
+    }
+
+    public static <$Actor extends Actor> $Actor and($Actor argument) throws Exception {
+        persistData();
+        return argument;
+    }
+
+    private static void persistData() throws SQLException {
+        if (!persisted) {
+            DataWriter.persistData();
+        }
+    }
+
+    public static <$Assertion extends Assertion> $Assertion then($Assertion argument) {
+        return argument;
+    }
+
+    public static <$Assertion extends Assertion> $Assertion and($Assertion argument) {
+        return argument;
     }
 
 }

@@ -24,19 +24,20 @@ define 'UniversityRegistration' do
 	project.version = '0.1.0'
 
 	define 'domain' do
+	    compile.with HIBERNATE_CORE
 		test.with MOCKITO
 		package :jar
 	end
 
 	define 'infrastructure' do
-		compile.with projects('domain'), MYSQL_CONNECTOR
+		compile.with projects('domain'), MYSQL_CONNECTOR, HIBERNATE_CORE
 		test.with MOCKITO
 		package :jar
 	end
 
 	define 'web' do
 		compile.with projects('infrastructure','domain'), SERVLET_API, JETTY_WEBAPP, STRINGTEMPLATE, HIBERNATE_CORE, HIBERNATE_C3P0 
-		test.with MOCKITO
+		test.with MOCKITO, JUNIT
 		package(:jar)
 		package :war
 	end

@@ -1,7 +1,7 @@
 package com.thoughtworks.universityregistration.web.infrastructure;
 
 public enum ModelKeys {
-    ;
+    COURSES("courses");
 
     private final String key;
 
