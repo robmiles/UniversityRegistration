@@ -5,3 +5,4 @@
 .idea
 */reports
 target/
+.DS_Store

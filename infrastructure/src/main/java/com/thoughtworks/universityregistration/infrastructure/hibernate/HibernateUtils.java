@@ -50,8 +50,8 @@ public class HibernateUtils {
 
         String connectionUrl = String.format("jdbc:mysql://localhost/UniversityRegistration");
 
-        cfg.setProperty("hibernate.connection.username", "unireg");
-        cfg.setProperty("hibernate.connection.password", "unireg");
+        cfg.setProperty("hibernate.connection.username", PropertiesLoader.getDatabaseUserName());
+        cfg.setProperty("hibernate.connection.password", PropertiesLoader.getDatabasePassword());
         cfg.setProperty("hibernate.connection.url", connectionUrl);
 
         cfg.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
